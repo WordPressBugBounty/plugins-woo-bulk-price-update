@@ -1,0 +1,291 @@
+.boxed {
+    padding: 30px 0px;
+}
+
+.wp-admin select[multiple] {
+    height: 200px;
+    font-size: x-large;
+    color: gray;
+}
+
+label {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #444;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+.mode-panel select {
+    display: block;
+    width: 100%;
+}
+
+.select-container {
+    display: inline
+}
+
+.select-container select,
+.select-container input,
+.bootstrap-tagsinput {
+    width: 100%;
+}
+
+progress.techno-progress {
+    width: 100%;
+    height: 42px;
+    margin: 0 auto 24px;
+    display: block;
+    -webkit-appearance: none;
+    border: none;
+    background: #f5f5f5;
+    border: 2px solid #eee;
+    border-radius: 4px;
+    padding: 0;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, .2);
+}
+
+div#add_products_chosen {
+    width: 770px !important;
+}
+
+label.lbl_tc {
+    font-size: 15px;
+    color: #555c63;
+}
+
+.bulk-content-area .techno_main_tabs {
+    float: left;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    margin-right: .5em;
+    font-size: 14px;
+    line-height: 1.71428571;
+    font-weight: 600;
+    background: #e5e5e5;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.bulk-content-area .techno_main_tabs a {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #555;
+}
+
+.bulk-content-area .main-panel {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+}
+
+.bulk-content-area .techno_main_tabs.active a {
+    background: #f1f1f1;
+}
+
+.bulk-content-area .techno_main_tabs a:focus {
+    box-shadow: none;
+    outline: 0px solid transparent;
+}
+
+.bulk-content-area .techno_main_tabs {
+    display: inline-block;
+    float: left;
+}
+
+.bulk-content-area .techno_main_tabs.active {
+    margin-bottom: -1px;
+}
+
+.techno_tabs.tab_premium label {
+    vertical-align: middle;
+}
+
+.col-50 {
+    width: 46%;
+    float: left;
+}
+
+.col-50 img {
+    width: 183px;
+    float: left;
+}
+
+.content_right a {
+    background: blue;
+    font-family: "Trebuchet MS", sans-serif !important;
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    background-color: #538fbe;
+    padding: 10px 40px;
+    font-size: 20px;
+    border: 1px solid #2d6898;
+    background-image: linear-gradient(bottom, #4984b4 0, #619bcb 100%);
+    background-image: -o-linear-gradient(bottom, #4984b4 0, #619bcb 100%);
+    background-image: -moz-linear-gradient(bottom, #4984b4 0, #619bcb 100%);
+    background-image: -webkit-linear-gradient(bottom, #4984b4 0, #619bcb 100%);
+    background-image: -ms-linear-gradient(bottom, #4984b4 0, #619bcb 100%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4984b4), color-stop(1, #619bcb));
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 0 0 0 #2b638f, 0 3px 15px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .3), inset 0 0 3px rgba(255, 255, 255, .5);
+    -moz-box-shadow: 0 0 0 #2b638f, 0 3px 15px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .3), inset 0 0 3px rgba(255, 255, 255, .5);
+    box-shadow: 0 0 0 #2b638f, 0 3px 15px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .3), inset 0 0 3px rgba(255, 255, 255, .5);
+    margin-top: 10px;
+}
+
+/* Techno css 30-04-2024  */
+
+.tab_wrapper.bulk-content-area {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 40px;
+    display: flow-root;
+    width: 100%;
+    margin: 30px 30px 30px 0;
+    box-sizing: border-box;
+    max-width: calc(100% - 30px);
+    font-family: arial;
+}
+
+.bulk-content-area .techno_main_tabs {
+    position: relative;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    border: none;
+}
+
+.bulk-content-area .techno_main_tabs.active::before {
+    content: "";
+    height: 3px;
+    background: #08519e;
+    width: 100%;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+}
+
+.bulk-content-area .techno_main_tabs a {
+    color: #000;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 10px 25px;
+    background: #fff;
+}
+
+.bulk-content-area .techno_main_tabs.active a {
+    background: #f5f5f5;
+    color: #08519e;
+}
+
+.form-table input.tog,
+.form-table input[type="radio"] {
+    margin-left: 15px;
+}
+
+.form-table input[type="radio"]:first-child {
+    margin-left: 0;
+}
+
+.form-table th {
+    padding: 20px 30px 20px 0;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-group .multiselect.dropdown-toggle,
+.form-table #percentage {
+    padding: 5px 15px;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: none;
+    line-height: 30px;
+}
+
+button .caret {
+    margin: 11px 0;
+}
+
+.techno_tabs.tab_premium form .col-50.buy_activation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.techno_tabs.tab_premium .content_right {
+    border-left: 4px solid #08519e;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0 20px 20px 0;
+    margin-left: 10px;
+}
+
+.techno_tabs.tab_premium form .col-50 .content_right p {
+    font-weight: 700;
+}
+
+.techno_tabs.tab_premium form .col-50 .content_right a {
+    border: none;
+    box-shadow: none;
+    border-radius: 5px;
+    color: #fff;
+    background: #08519e;
+    padding: 10px 40px;
+    transition: 0.3s all ease;
+}
+
+.techno_tabs.tab_premium h1,
+.techno_tabs.tab_premium h2,
+.techno_tabs.tab_premium h3,
+.techno_tabs.tab_premium h4,
+.techno_tabs.tab_premium h5,
+.techno_tabs.tab_premium h6 {
+    color: #08519e;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.techno_tabs.tab_premium h4 {
+    font-size: 14px;
+}
+
+.techno_tabs.tab_premium label {
+    font-weight: bold;
+}
+
+#techno_wc_bulk_price_update_license_key {
+    margin-left: 15px;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+
+p.submit .button {
+    background: #08519e;
+    border: none;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 7px 30px;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    box-shadow: 0 00 4px rgba(0, 0, 0, 0.1);
+    transition: 0.3s all ease;
+    line-height: 30px;
+}
+
+p.submit .button:hover,
+.techno_tabs.tab_premium form .col-50 .content_right a:hover {
+    background: #00346a;
+}
+.select2-results__option[aria-selected=true] {
+    display: none;
+}
+
+.sellectall-label{margin-right: 20px;}
+td span.select2-container--default{width: calc(100% - 200px) !important;}
