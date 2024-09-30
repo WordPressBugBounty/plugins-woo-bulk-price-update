@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Bulk Price Update for Woocommerce
  * Description: WooCommerce percentage pricing by Category allows you to Change WooCommerce products Price By Category.
- * Version: 2.2.7
+ * Version: 2.2.8
  * Author: TechnoCrackers
  * Author URI: https://technocrackers.com
  * WC tested up to: 8.8.2
@@ -535,227 +535,254 @@ class woocommerce_bulk_price_update
 							}
 
 							if (!$product->is_type('variable')) {
-								$product_prc = get_post_meta($product->get_id(), '_price', true);
-								$sale_price = get_post_meta($product->get_id(), '_sale_price', true);
-								$regular_price = get_post_meta($product->get_id(), '_regular_price', true);
-								$sale_price = is_numeric($sale_price) ? (float) $sale_price : 0;
-            					$regular_price = is_numeric($regular_price) ? (float) $regular_price : 0;
-
-								$res['old_price_regular'] = $regular_price;
-								$res['old_price_sale'] = $sale_price;
-                                
-                                if ($regular_price > 0 || $sale_price > 0) {
-    								if (!empty($sale_price)) {
-    									if ($price_type_by_change == 'by_percent') {
-    										$sale_price_update = (float) $sale_price * ($percentage / 100);
-    										$regular_price_update = (float) $regular_price * ($percentage / 100);
-    									} elseif ($price_type_by_change == 'by_fixed' && $lic_state) {
-    										$sale_price_update = $percentage;
-    										$regular_price_update = $percentage;
-    									}
-    									if ($opration_type == "increase-percentge") {
-    										$sale_product_prc = $sale_price + $sale_price_update;
-    										$regular_product_prc = $regular_price + $regular_price_update;
-    									} elseif ($opration_type == "discount-percentge") {
-    										$sale_product_prc = $sale_price - $sale_price_update;
-    										$regular_product_prc = $regular_price - $regular_price_update;
-    									} elseif ($opration_type == "increase-percentge-regular") {
-    										$sale_product_prc = $sale_price;
-    										$regular_product_prc = $regular_price + $regular_price_update;
-    									} elseif ($opration_type == "increase-percentge-sale") {
-    										$sale_product_prc = $sale_price + $sale_price_update;
-    										$regular_product_prc = $regular_price;
-    									} elseif ($opration_type == "discount-percentge-regular") {
-    										$regular_product_prc = $regular_price - $regular_price_update;
-    										$sale_product_prc = $sale_price;
-    									} elseif ($opration_type == "discount-percentge-sale") {
-    										$sale_product_prc = $sale_price - $sale_price_update;
-    										$regular_product_prc = $regular_price;
-    									}
-    
-    									if ($price_rounds_point == 'true') {
-    										$sale_product_prc = round($sale_product_prc);
-    										$regular_product_prc = round($regular_product_prc);
-    									}
-    
-    									$sale_product_prc = round($sale_product_prc, 2);
-    									$regular_product_prc = round($regular_product_prc, 2);
-    
-    									if ($tc_dry_run == 'false') {
-    										update_post_meta($product->get_id(), '_sale_price', $sale_product_prc);
-    										update_post_meta($product->get_id(), '_regular_price', $regular_product_prc);
-    										update_post_meta($product->get_id(), '_price', $sale_product_prc);
-    									}
-    
-    									$res['new_price_regular'] = $regular_product_prc;
-    									$res['new_price_sale'] = $sale_product_prc;
-    								} else {
-    									if ($price_type_by_change == 'by_percent') {
-    										$regular_price_update = (float) $regular_price * ($percentage / 100);
-    									} elseif ($price_type_by_change == 'by_fixed' && $lic_state) {
-    										$regular_price_update = (float) $percentage;
-    									}
-    
-    									if ($opration_type == "increase-percentge") {
-    										$regular_product_prc = (float) $regular_price + $regular_price_update;
-    									}
-    
-    									if ($opration_type == "discount-percentge") {
-    										$regular_product_prc = (float) $regular_price - $regular_price_update;
-    									}
-    
-    									if ($opration_type == "increase-percentge-regular") {
-    										$regular_product_prc = $regular_price + $regular_price_update;
-    									}
-    
-    									if ($opration_type == "increase-percentge-sale") {
-    										$regular_product_prc = $regular_price;
-    									} 
-    									
-    									if ($opration_type == "discount-percentge-regular") {
-    										$regular_product_prc = $regular_price - $regular_price_update;
-    									}
-    									if ($opration_type == "discount-percentge-sale") {
-    										$regular_product_prc = $regular_price;
-    									}
-    
-    									if ($price_rounds_point == 'true') {
-    										$regular_product_prc = round($regular_product_prc);
-    									}
-    
-    									$regular_product_prc = round($regular_product_prc, 2);
-    
-    									if ($tc_dry_run == 'false') {
-    										update_post_meta($product->get_id(), '_regular_price', $regular_product_prc);
-    										update_post_meta($product->get_id(), '_price', $regular_product_prc);
-    									}
-    
-    									$res['new_price_regular'] = $regular_product_prc;
-    									$res['new_price_sale'] = $sale_price;
-    								}
+                                $product_prc = get_post_meta($product->get_id(), '_price', true);
+                                $sale_price = get_post_meta($product->get_id(), '_sale_price', true);
+                                $regular_price = get_post_meta($product->get_id(), '_regular_price', true);
+                                // Convert prices to float or null if empty
+                                $sale_price = is_numeric($sale_price) ? (float) $sale_price : null; // Keep null if it's blank
+                                $regular_price = is_numeric($regular_price) ? (float) $regular_price : null; // Keep null if it's blank
+                            
+                                $res['old_price_regular'] = $regular_price;
+                                $res['old_price_sale'] = $sale_price;
+                            
+                                // Skip if both prices are blank or 0
+                                if (($regular_price === null || $regular_price == 0) && ($sale_price === null || $sale_price == 0)) {
+                                    // Do nothing
+                                    return;
                                 }
-								$html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($res['old_price_regular'] !== '' ? $currency . ' ' . $res['old_price_regular'] : '-') . '</code></td></tr><tr><td><strong>New Price:</strong></td><td><code>' . ($res['new_price_regular'] !== '' ? $currency . ' ' . $res['new_price_regular'] : '-') . '</code></td></tr>';
-								$html .= '</tbody></table></td>';
-								$html .= '<td><table><tbody>';
-								$html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($res['old_price_sale'] !== '' ? $currency . ' ' . $res['old_price_sale'] : '-') . '</code></td></tr><tr><td><strong>New Price:</strong></td><td><code>' . ($res['new_price_sale'] !== '' ? $currency . ' ' . $res['new_price_sale'] : '-') . '</code></td></tr>';
-								$html .= '</tbody></table></td>';
+                            
+                                // Initialize updated prices
+                                $sale_product_prc = $sale_price;
+                                $regular_product_prc = $regular_price;
+                            
+                                // Update logic when regular price exists but sale price is blank or 0
+                                if ($regular_price !== null && $regular_price > 0) {
+                                    if ($price_type_by_change == 'by_percent') {
+                                        $regular_price_update = $regular_price * ($percentage / 100);
+                                    } elseif ($price_type_by_change == 'by_fixed' && $lic_state) {
+                                        $regular_price_update = (float) $percentage;
+                                    }
+                            
+                                    if ($opration_type == "increase-percentge") {
+                                        $regular_product_prc = max($regular_price + $regular_price_update, 0);
+                                    } elseif ($opration_type == "discount-percentge") {
+                                        $regular_product_prc = max($regular_price - $regular_price_update, 0);
+                                    }
+                            
+                                    // Update sale price as regular price if sale price is blank
+                                    if ($sale_price === null || $sale_price == 0) {
+                                        $sale_product_prc = $regular_product_prc;
+                                    }
+                                }
+                            
+                                // Update logic when sale price exists but regular price is blank or 0
+                                if ($sale_price !== null && $sale_price > 0) {
+                                    if ($price_type_by_change == 'by_percent') {
+                                        $sale_price_update = $sale_price * ($percentage / 100);
+                                    } elseif ($price_type_by_change == 'by_fixed' && $lic_state) {
+                                        $sale_price_update = (float) $percentage;
+                                    }
+                            
+                                    if ($opration_type == "increase-percentge-sale") {
+                                        $sale_product_prc = max($sale_price + $sale_price_update, 0);
+                                    } elseif ($opration_type == "discount-percentge-sale") {
+                                        $sale_product_prc = max($sale_price - $sale_price_update, 0);
+                                    }
+                            
+                                    // If regular price is 0 or blank, set it to the sale price
+                                    if ($regular_price === null || $regular_price == 0) {
+                                        $regular_product_prc = $sale_product_prc;
+                                    }
+                                }
+                            
+                                // Round prices if required
+                                if ($price_rounds_point == 'true') {
+                                    if ($regular_price !== null && $regular_price > 0) {
+                                        $regular_product_prc = round($regular_product_prc);
+                                    }
+                                    if ($sale_price !== null && $sale_price > 0) {
+                                        $sale_product_prc = round($sale_product_prc);
+                                    }
+                                }
+                            
+                                // Always round prices to 2 decimal places for consistency
+                                if ($regular_price !== null && $regular_price > 0) {
+                                    $regular_product_prc = round($regular_product_prc, 2);
+                                }
+                                if ($sale_price !== null && $sale_price > 0) {
+                                    $sale_product_prc = round($sale_product_prc, 2);
+                                }
+                            
+                                // If dry run is false, update the prices
+                                if ($tc_dry_run == 'false') {
+                                    // Update regular price if it's valid
+                                    if ($regular_price !== null && $regular_price > 0) {
+                                        update_post_meta($product->get_id(), '_regular_price', $regular_product_prc);
+                                        update_post_meta($product->get_id(), '_price', $regular_product_prc); // Regular price in '_price' if no sale price
+                                    }
+                                    elseif( $regular_price !== null && $regular_price == 0 ){
+                                        update_post_meta($product->get_id(), '_regular_price', '');
+                                    }
+                            
+                                    // Update sale price if it's valid
+                                    if ($sale_price !== null && $sale_price > 0) {
+                                        update_post_meta($product->get_id(), '_sale_price', $sale_product_prc);
+                                        update_post_meta($product->get_id(), '_price', $sale_product_prc); // Sale price takes precedence
+                                    }
+                                    elseif( $sale_price !== null && $sale_price == 0 ){
+                                            update_post_meta($child_id, '_sale_price', '');
+                                        }
+                                    
+                                }
+                            
+                                // Update result array with new prices
+                                $res['new_price_regular'] = ($regular_price !== null && $regular_price > 0) ? $regular_product_prc : '-';
+                                $res['new_price_sale'] = ($sale_price !== null && $sale_price > 0) ? $sale_product_prc : '-';
+                            
+                                // Build HTML output for updated prices
+                                $html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($res['old_price_regular'] !== '' ? $currency . ' ' . $res['old_price_regular'] : '-') . '</code></td></tr>';
+                                $html .= '<tr><td><strong>New Price:</strong></td><td><code>' . ($res['new_price_regular'] !== '' ? $currency . ' ' . $res['new_price_regular'] : '-') . '</code></td></tr>';
+                                $html .= '</tbody></table></td>';
+                                $html .= '<td><table><tbody>';
+                                $html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($res['old_price_sale'] !== '' ? $currency . ' ' . $res['old_price_sale'] : '-') . '</code></td></tr>';
+                                $html .= '<tr><td><strong>New Price:</strong></td><td><code>' . ($res['new_price_sale'] !== '' ? $currency . ' ' . $res['new_price_sale'] : '-') . '</code></td></tr>';
+                                $html .= '</tbody></table></td>';
+                            }
+                            elseif ($lic_state) {
+                                $res['is_type'] = 'variable';
+                                $var_new_price = array();
+                                $variation_count = 0;
+                            
+                                foreach ($product->get_children() as $child_id) {
+                                    $variation_res = array();
+                                    $variation_count++;
+                            
+                                    // Fetch prices from meta
+                                    $sale_price = get_post_meta($child_id, '_sale_price', true);
+                                    $regular_price = get_post_meta($child_id, '_regular_price', true);
 
-							} elseif ($lic_state) {
-									$res['is_type'] = 'variable';
-									$var_new_price = array();
-									$variation_count = 0;
-
-									foreach ($product->get_children() as $child_id) {
-											$variation_res = array();
-											$variation_count++;
-
-											// Fetch prices from meta
-											$sale_price = get_post_meta($child_id, '_sale_price', true);
-											$regular_price = get_post_meta($child_id, '_regular_price', true);
-
-											// Convert prices to float or default to 0 if empty or invalid
-											$sale_price = is_numeric($sale_price) ? (float) $sale_price : 0;
-											$regular_price = is_numeric($regular_price) ? (float) $regular_price : 0;
-
-											// Save old prices for the result array
-											$variation_res['old_price_regular'] = $regular_price;
-											$variation_res['old_price_sale'] = $sale_price;
-
-											// Initialize variables for updated prices
-											$sale_price_update = 0;
-											$regular_price_update = 0;
-											$sale_product_prc = $sale_price;
-											$regular_product_prc = $regular_price;
-
-											// Apply percentage or fixed update
-											if ($price_type_by_change == 'by_percent') {
-													$sale_price_update = $sale_price * ($percentage / 100);
-													$regular_price_update = $regular_price * ($percentage / 100);
-											} elseif ($price_type_by_change == 'by_fixed' && $lic_state) {
-													$sale_price_update = (float) $percentage;
-													$regular_price_update = (float) $percentage;
-											}
-
-											// Increase or decrease prices based on operation type
-											if ($opration_type == "increase-percentge") {
-													$sale_product_prc = max($sale_price + $sale_price_update, 0);
-													$regular_product_prc = max($regular_price + $regular_price_update, 0);
-											} elseif ($opration_type == "discount-percentge") {
-													$sale_product_prc = max($sale_price - $sale_price_update, 0);
-													$regular_product_prc = max($regular_price - $regular_price_update, 0);
-											} elseif ($opration_type == "increase-percentge-regular") {
-													$regular_product_prc = max($regular_price + $regular_price_update, 0);
-											} elseif ($opration_type == "increase-percentge-sale") {
-													$sale_product_prc = max($sale_price + $sale_price_update, 0);
-											} elseif ($opration_type == "discount-percentge-regular") {
-													$regular_product_prc = max($regular_price - $regular_price_update, 0);
-											} elseif ($opration_type == "discount-percentge-sale") {
-													$sale_product_prc = max($sale_price - $sale_price_update, 0);
-											}
-
-											// Round prices if required
-											if ($price_rounds_point == 'true') {
-													$sale_product_prc = round($sale_product_prc);
-													$regular_product_prc = round($regular_product_prc);
-											}
-
-											// Always round prices to 2 decimal places for consistency
-											$sale_product_prc = round($sale_product_prc, 2);
-											$regular_product_prc = round($regular_product_prc, 2);
-
-											// If dry run is disabled, update the database with new prices
-											if ($tc_dry_run == 'false') {
-													update_post_meta($child_id, '_sale_price', $sale_product_prc);
-													update_post_meta($child_id, '_regular_price', $regular_product_prc);
-
-													// _price should generally reflect the sale price if available, otherwise the regular price
-													if ($sale_product_prc > 0) {
-															update_post_meta($child_id, '_price', $sale_product_prc);
-															$var_new_price[] = $sale_product_prc;
-													} else {
-															update_post_meta($child_id, '_price', $regular_product_prc);
-															$var_new_price[] = $regular_product_prc;
-													}
-											}
-
-											// Save new prices in result array
-											$variation_res['new_price_regular'] = $regular_product_prc;
-											$variation_res['new_price_sale'] = $sale_product_prc;
-
-											// Store the result for this variation
-											$res['variation_' . $variation_count] = $variation_res;
-									}
-
-									// Build HTML for displaying updated prices
-									$html = '<td>' . (($thumbnail) ? $thumbnail : wc_placeholder_img(array(50, 50))) . '</td>';
-									$html .= '<td>' . $product_id . '</td>';
-									$html .= '<td>' . $product->get_name() . '</td>';
-									$html .= '<td>' . $product->get_type() . '</td>';
-									$html .= '<td><table><tbody>';
-									
-									foreach ($res as $key => $value) {
-											if ($key != 'is_type') {
-													$html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($value['old_price_regular'] !== '' ? $currency . ' ' . $value['old_price_regular'] : '-') . '</code></td></tr>';
-													$html .= '<tr><td><strong>New Price:</strong></td><td><code>' . ($value['new_price_regular'] !== '' ? $currency . ' ' . $value['new_price_regular'] : '-') . '</code></td></tr>';
-											}
-									}
-
-									$html .= '</tbody></table></td>';
-
-									$html .= '<td><table><tbody>';
-									foreach ($res as $key => $value) {
-											if ($key != 'is_type') {
-													$html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($value['old_price_sale'] !== '' ? $currency . ' ' . $value['old_price_sale'] : '-') . '</code></td></tr>';
-													$html .= '<tr><td><strong>New Price:</strong></td><td><code>' . ($value['new_price_sale'] !== '' ? $currency . ' ' . $value['new_price_sale'] : '-') . '</code></td></tr>';
-											}
-									}
-									$html .= '</tbody></table></td>';
-
-									// If dry run is disabled, update the main product price (use the minimum new variation price)
-									if ($tc_dry_run == 'false') {
-											update_post_meta($product->get_id(), '_price', min($var_new_price));
-									}
-							}
+                                    // Convert prices to float or null if empty
+                                    $sale_price = is_numeric($sale_price) ? (float) $sale_price : null; // Keep null if blank
+                                    $regular_price = is_numeric($regular_price) ? (float) $regular_price : null; // Keep null if blank
+                            
+                                    // Skip if both prices are 0 or null
+                                    if (($regular_price === null || $regular_price == 0) && ($sale_price === null || $sale_price == 0)) {
+                                        continue; // Skip this variation, nothing to update
+                                    }
+                            
+                                    // Initialize updated prices
+                                    $sale_product_prc = $sale_price;
+                                    $regular_product_prc = $regular_price;
+                            
+                                    // Calculate price updates
+                                    if ($price_type_by_change == 'by_percent') {
+                                        $sale_price_update = ($sale_price !== null && $sale_price > 0) ? $sale_price * ($percentage / 100) : 0;
+                                        $regular_price_update = ($regular_price !== null && $regular_price > 0) ? $regular_price * ($percentage / 100) : 0;
+                                    } elseif ($price_type_by_change == 'by_fixed' && $lic_state) {
+                                        $sale_price_update = ($sale_price !== null && $sale_price > 0) ? (float) $percentage : 0;
+                                        $regular_price_update = ($regular_price !== null && $regular_price > 0) ? (float) $percentage : 0;
+                                    }
+                            
+                                    // Apply operation type for regular price (only if regular price exists)
+                                    if ($regular_price !== null && $regular_price > 0) {
+																			 $variation_res['old_price_regular'] = $regular_price;
+                                        if ($opration_type == "increase-percentge") {
+                                            $regular_product_prc = max($regular_price + $regular_price_update, 0);
+                                        } elseif ($opration_type == "discount-percentge") {
+                                            $regular_product_prc = max($regular_price - $regular_price_update, 0);
+                                        }
+                                    }
+                            
+                                    // Apply operation type for sale price (only if sale price exists)
+                                    if ($sale_price !== null && $sale_price > 0) {
+																				$variation_res['old_price_sale'] = $sale_price;
+                                        if ($opration_type == "increase-percentge-sale") {
+                                            $sale_product_prc = max($sale_price + $sale_price_update, 0);
+                                        } elseif ($opration_type == "discount-percentge-sale") {
+                                            $sale_product_prc = max($sale_price - $sale_price_update, 0);
+                                        }
+                                    }
+                            
+                                    // Rounding prices if required
+                                    if ($price_rounds_point == 'true') {
+                                        if ($regular_price !== null && $regular_price > 0) {
+                                            $regular_product_prc = round($regular_product_prc);
+                                        }
+                                        if ($sale_price !== null && $sale_price > 0) {
+                                            $sale_product_prc = round($sale_product_prc);
+                                        }
+                                    }
+                            
+                                    // Always round to 2 decimal places for consistency
+                                    if ($regular_price !== null && $regular_price > 0) {
+                                        $regular_product_prc = round($regular_product_prc, 2);
+                                    }
+                                    if ($sale_price !== null && $sale_price > 0) {
+                                        $sale_product_prc = round($sale_product_prc, 2);
+                                    }
+                            
+                                    // If dry run is false, update only valid prices
+                                    if ($tc_dry_run == 'false') {
+                                        // Update regular price if it's valid
+                                        if ($regular_price !== null && $regular_price > 0) {
+                                            update_post_meta($child_id, '_regular_price', $regular_product_prc);
+                                            update_post_meta($child_id, '_price', $regular_product_prc); // Set regular price in '_price' if no sale price
+                                            $var_new_price[] = $regular_product_prc;
+                                        }
+                                        elseif ($regular_price !== null && $regular_price == 0) {
+                                            update_post_meta($child_id, '_regular_price', '');
+                                        }
+                                        // Update sale price if it's valid
+                                        if ($sale_price !== null && $sale_price > 0) {
+                                            update_post_meta($child_id, '_sale_price', $sale_product_prc);
+                                            update_post_meta($child_id, '_price', $sale_product_prc); // Sale price takes precedence over regular price
+                                            $var_new_price[] = $sale_product_prc;
+                                        }
+                                        elseif( $sale_price !== null && $sale_price == 0 ){
+                                            update_post_meta($child_id, '_sale_price', '');
+                                        }
+                                    }
+                            
+                                    // Save updated prices in result array
+                                    $variation_res['new_price_regular'] = ($regular_price !== null && $regular_price > 0) ? $regular_product_prc : '-';
+                                    $variation_res['new_price_sale'] = ($sale_price !== null && $sale_price > 0) ? $sale_product_prc : '-';
+																		$variation_res['child_id'] = $child_id;
+                                    // Save results for this variation
+                                    $res['variation_' . $variation_count] = $variation_res;
+                                }
+                            
+                                // HTML display for the updated prices
+                                $html = '<td>' . (($thumbnail) ? $thumbnail : wc_placeholder_img(array(50, 50))) . '</td>';
+                                $html .= '<td>' . $product_id . '</td>';
+                                $html .= '<td>' . $product->get_name() . '</td>';
+                                $html .= '<td>' . $product->get_type() . '</td>';
+                                $html .= '<td><table><tbody>';
+                            
+                                foreach ($res as $key => $value) {
+                                    if ($key != 'is_type') {
+                                        $html .= '<tr><td><strong>Variation ID:</strong></td><td><code>' . ($value['child_id'] !== '' ? $value['child_id'] : '-') . '</code></td></tr>';
+																				$html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($value['old_price_regular'] !== '' ? $currency . ' ' . $value['old_price_regular'] : '-') . '</code></td></tr>';
+                                        $html .= '<tr><td><strong>New Price:</strong></td><td><code>' . ($value['new_price_regular'] !== '' ? $currency . ' ' . $value['new_price_regular'] : '-') . '</code></td></tr>';
+                                    }
+                                }
+                            
+                                $html .= '</tbody></table></td>';
+                            
+                                $html .= '<td><table><tbody>';
+                                foreach ($res as $key => $value) {
+                                    if ($key != 'is_type') {
+																				$html .= '<tr><td><strong>Variation ID:</strong></td><td><code>' . ($value['child_id'] !== '' ? $value['child_id'] : '-') . '</code></td></tr>';
+                                        $html .= '<tr class="'.$product_id.'"><td><strong>Old Price:</strong></td><td><code>' . ($value['old_price_sale'] !== '' ? $currency . ' ' . $value['old_price_sale'] : '-') . '</code></td></tr>';
+                                        $html .= '<tr><td><strong>New Price:</strong></td><td><code>' . ($value['new_price_sale'] !== '' ? $currency . ' ' . $value['new_price_sale'] : '-') . '</code></td></tr>';
+                                    }
+                                }
+                                $html .= '</tbody></table></td>';
+                            
+                                // If dry run is disabled, update the main product price with the lowest new price from variations
+                                if ($tc_dry_run == 'false' && !empty($var_new_price)) {
+                                    update_post_meta($product->get_id(), '_price', min($var_new_price));
+                                }
+                            }
 
 
 							if (sizeof($res) == 0) {

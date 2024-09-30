@@ -5,7 +5,7 @@ Tags: bulk,woocommerce,woocommerce-bulk-edit,bulk-edit,product-bulk-edit,update-
 Requires at least: 6.3
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 2.2.7
+Stable tag: 2.2.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,10 @@ For any queries feel free to drop a line at <a href="mailto:wordpress@technocrac
 
 
 == Changelog ==
+
+= 2.2.8 =
+* Multi currency issue in prices fixed
+* Variable products without variations issue fixed
 
 = 2.2.7 =
 * regular and sale price special character issue fixed
