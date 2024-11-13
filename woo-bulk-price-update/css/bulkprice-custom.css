@@ -289,3 +289,21 @@ p.submit .button:hover,
 
 .sellectall-label{margin-right: 20px;}
 td span.select2-container--default{width: calc(100% - 200px) !important;}
+.techno_tabs.tab_dashbord form {
+    width: 70%;
+    float: left;
+}
+
+.techno_tabs.tab_dashbord .col-30 {
+    width: 30%;
+    float: left;
+    border-left: 1px solid #000;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+
+.techno_tabs.tab_dashbord .col-30 a img {
+    width: 150px;
+    float: left;
+}
+.premium-features{ float: left; width: 100%; }
