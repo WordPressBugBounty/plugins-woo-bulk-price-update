@@ -2,12 +2,12 @@
 /**
  * Plugin Name: Bulk Price Update for Woocommerce
  * Description: WooCommerce percentage pricing by Category allows you to Change WooCommerce products Price By Category.
- * Version: 2.2.9
+ * Version: 2.3
  * Author: TechnoCrackers
  * Author URI: https://technocrackers.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * WC tested up to: 8.8.2
+ * WC tested up to: 9.9.5
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class WBPU_BULK_PRICE_UPDATE

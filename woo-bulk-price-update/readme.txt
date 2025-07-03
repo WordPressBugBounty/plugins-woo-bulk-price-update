@@ -1,11 +1,11 @@
 === Bulk Price Update for Woocommerce ===
 Contributors: Technocrackers
 Donate link: https://www.technocrackers.com/
-Tags: bulk,woocommerce,woocommerce-bulk-edit,bulk-edit,product-bulk-edit,update-product-price
+Tags: woocommerce,woocommerce-bulk-edit,bulk-edit,product-bulk-edit,update-product-price
 Requires at least: 6.3
-Tested up to: 6.5
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.2.9
+Stable tag: 2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
