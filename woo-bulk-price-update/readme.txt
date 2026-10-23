@@ -2,8 +2,8 @@
 Contributors: Technocrackers
 Donate link: https://www.technocrackers.com/
 Tags: woocommerce,woocommerce-bulk-edit,bulk-edit,product-bulk-edit,update-product-price
-Requires at least: 6.3
-Tested up to: 6.8
+Requires at least: 6.4
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 2.3
 License: GPLv2 or later
